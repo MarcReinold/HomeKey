@@ -1,0 +1,41 @@
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    volumes:
+      - "C:/Users/Startklar/OneDrive - tgm - Die Schule der Technik/Desktop/HomeKey/HomeKey/hass-config:/config"
+      - /etc/localtime:/etc/localtime:ro
+    restart: always
+    ports:
+      - "8123:8123"
+
+  mqtt:
+    container_name: mosquitto
+    image: eclipse-mosquitto:latest
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - "C:/Users/Startklar/OneDrive - tgm - Die Schule der Technik/Desktop/HomeKey/HomeKey/mosquitto/config:/mosquitto/config"
+      - "C:/Users/Startklar/OneDrive - tgm - Die Schule der Technik/Desktop/HomeKey/HomeKey/mosquitto/data:/mosquitto/data"
+      - "C:/Users/Startklar/OneDrive - tgm - Die Schule der Technik/Desktop/HomeKey/HomeKey/mosquitto/log:/mosquitto/log"
+    restart: always
+
+  esphome:
+    container_name: esphome
+    image: ghcr.io/esphome/esphome
+    volumes:
+      - "C:/Users/Startklar/OneDrive - tgm - Die Schule der Technik/Desktop/HomeKey/HomeKey/esphome-config:/config"
+      - /etc/localtime:/etc/localtime:ro
+    restart: always
+    ports:
+      - "6052:6052"
+
+  webserver:
+    image: nginx:latest
+    container_name: mein_nginx_server
+    ports:
+      - "8080:80"
+    volumes:
+      - "C:/Users/Startklar/OneDrive - tgm - Die Schule der Technik/Desktop/HomeKey/HomeKey/html:/usr/share/nginx/html"
+    restart: always
